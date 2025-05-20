@@ -1,3 +1,4 @@
+using InvoiceApp.Models;
 using InvoiceApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,12 +14,32 @@ namespace InvoiceApp.Pages.Invoices
             this.context = context;
         }
 
+        [BindProperty]
+        public Invoice? Invoice { get; set; }
+
         public IActionResult OnGet(int id)
         {
-            var invoice = context.Invoices.Find(id);
-            if (invoice != null)
+            Invoice = context.Invoices.Find(id);
+            if (Invoice == null)
             {
-                context.Invoices.Remove(invoice);
+                return RedirectToPage("/Invoices/Index");
+            }
+
+            return Page();
+        }
+
+
+        public IActionResult OnPost()
+        {
+            if (Invoice == null)
+            {
+                return RedirectToPage("/Invoices/Index");
+            }
+
+            var invoiceToDelete = context.Invoices.Find(Invoice.Id);
+            if (invoiceToDelete != null)
+            {
+                context.Invoices.Remove(invoiceToDelete);
                 context.SaveChanges();
             }
 

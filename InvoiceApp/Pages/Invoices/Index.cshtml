@@ -4,21 +4,134 @@
 }
 
 <h2 class="text-center mb-3">Invoices</h2>
-<a class="btn btn-primary" asp asp-page="/Invoices/Create">New Invoice</a>
+<a class="btn btn-primary mb-3" asp asp-page="/Invoices/Create">New Invoice</a>
+<form method="get" class="mb-3 d-flex">
+    <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control me-2" placeholder="Search by invoice number or client name" />
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Invoice No</th>
-            <th>Status</th>
-            <th>Client</th>
-            <th>Total Price</th>
-            <th>Issue Date</th>
-            <th>Due Date</th>
+            <th>
+                ID
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="Id" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="desc" selected="@(Model.SortBy == "Id" && Model.SortDirection == "desc" ? "selected" : null)">Decrease</option>
+                        <option value="asc" selected="@(Model.SortBy == "Id" && Model.SortDirection == "asc" ? "selected" : null)">Increase</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+            <th>
+                Invoice No
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="Number" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="desc" selected="@(Model.SortBy == "Number" && Model.SortDirection == "desc" ? "selected" : null)">Decrease</option>
+                        <option value="asc" selected="@(Model.SortBy == "Number" && Model.SortDirection == "asc" ? "selected" : null)">Increase</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+            <th>
+                Status
+                <form method="get" class="d-inline">
+                    <select name="StatusFilter" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Default</option>
+                        <option value="Paid" selected="@(Model.StatusFilter == "Paid" ? "selected" : null)">Paid</option>
+                        <option value="Pending" selected="@(Model.StatusFilter == "Pending" ? "selected" : null)">Pending</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="SortBy" value="@Model.SortBy" />
+                    <input type="hidden" name="SortDirection" value="@Model.SortDirection" />
+                </form>
+            </th>
+
+            <th>
+                Client
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="ClientName" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="asc" selected="@(Model.SortBy == "ClientName" && Model.SortDirection == "asc" ? "selected" : null)">A to Z</option>
+                        <option value="desc" selected="@(Model.SortBy == "ClientName" && Model.SortDirection == "desc" ? "selected" : null)">Z to A</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+            <th>
+                Total Price
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="Total" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="asc" selected="@(Model.SortBy == "Total" && Model.SortDirection == "asc" ? "selected" : null)">Increase</option>
+                        <option value="desc" selected="@(Model.SortBy == "Total" && Model.SortDirection == "desc" ? "selected" : null)">Decrease</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+
+
+            <th>
+                Issue Date
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="IssueDate" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="asc" selected="@(Model.SortBy == "IssueDate" && Model.SortDirection == "asc" ? "selected" : null)">Earliest</option>
+                        <option value="desc" selected="@(Model.SortBy == "IssueDate" && Model.SortDirection == "desc" ? "selected" : null)">Latest</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+
+            <th>
+                Due Date
+                <form method="get" class="d-inline">
+                    <input type="hidden" name="SortBy" value="DueDate" />
+
+                    <select name="SortDirection" onchange="this.form.submit()" class="form-select form-select-sm">
+                        <option value="">Default</option>
+                        <option value="asc" selected="@(Model.SortBy == "DueDate" && Model.SortDirection == "asc" ? "selected" : null)">Earliest</option>
+                        <option value="desc" selected="@(Model.SortBy == "DueDate" && Model.SortDirection == "desc" ? "selected" : null)">Latest</option>
+                    </select>
+
+                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                </form>
+            </th>
+
+
             <th>Action</th>
         </tr>
     </thead>
+
 
     <tbody class="table-group-devider">
         @foreach (var invoice in Model.invoiceList)
@@ -40,3 +153,24 @@
     </tbody>
 
 </table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteForm" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this invoice?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
